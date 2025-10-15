@@ -1,5 +1,6 @@
 # Ignore data folder and temporary system files
 data/
+.venv/
 
 # macOS and system clutter
 .DS_Store
