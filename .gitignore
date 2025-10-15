@@ -1,0 +1,14 @@
+# Ignore data folder and temporary system files
+data/
+
+# macOS and system clutter
+.DS_Store
+Thumbs.db
+
+# Python cache and notebook temp files
+__pycache__/
+.ipynb_checkpoints/
+
+# IDE / editor settings
+.vscode/
+.idea/
