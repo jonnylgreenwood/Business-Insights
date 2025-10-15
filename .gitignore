@@ -1,6 +1,7 @@
 # Ignore data folder and temporary system files
 data/
 .venv/
+Python/helloworld.py
 
 # macOS and system clutter
 .DS_Store
