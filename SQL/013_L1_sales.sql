@@ -1,12 +1,14 @@
 DETACH DATABASE IF EXISTS l0;
 ATTACH 'SQL/L0_forecast_accuracy.duckdb' AS l0 (READ_ONLY);
 
-------------------------------------------------------------
--- 1. Copy the sales table from L0 to L1
-------------------------------------------------------------
 CREATE OR REPLACE TABLE l1_sales AS
-SELECT
-    store_id,
-    item_id AS product_id,
-    columns('d_*')
-FROM l0.sales_train_evaluation;
+SELECT *
+FROM l0.sales_train_validation;
+
+ALTER TABLE sales_base DROP COLUMN id;
+ALTER TABLE sales_base DROP COLUMN dept_id;
+ALTER TABLE sales_base DROP COLUMN cat_id;
+ALTER TABLE sales_base DROP COLUMN state_id;
+ALTER TABLE sales_base RENAME COLUMN item_id TO product_id;
+
+DESCRIBE sales_base;
