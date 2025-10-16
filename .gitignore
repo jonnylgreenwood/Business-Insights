@@ -18,3 +18,4 @@ SQL/forecast_accuracy.duckdb
 forecast_accuracy.duckdb
 SQL/L0_forecast_accuracy.duckdb
 SQL/L1_forecast_accuracy.duckdb
+SQL/L1_forecast_accuracy.duckdb.wal
