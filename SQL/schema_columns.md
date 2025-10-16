@@ -1,4 +1,5 @@
 database_name|database_oid|schema_name|schema_oid|table_name|table_oid|column_name|column_index|comment|internal|column_default|is_nullable|data_type|data_type_id|character_maximum_length|numeric_precision|numeric_precision_radix|numeric_scale
+|----------------|---------------|--------------|--------------|-------------|--------------|---------------|---------------|-----------|-----------|----------------|-------------|-------------|-----------------|-----------------|-------------------------|----------------|
 L1_forecast_accuracy|629|main|590|dim_calendar|2488|date|1||false||true|DATE|15||||
 L1_forecast_accuracy|629|main|590|dim_calendar|2488|wm_yr_wk|2||false||true|BIGINT|14||64|2|0
 L1_forecast_accuracy|629|main|590|dim_calendar|2488|weekday|3||false||true|VARCHAR|25||||
