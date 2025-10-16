@@ -33,3 +33,11 @@ SELECT DISTINCT
     sell_price AS sell_price
 FROM l0.sell_prices;
 --------------------------------------------------
+
+--------------------------------------------------
+-- calendar DIMENSION
+--------------------------------------------------
+CREATE OR REPLACE TABLE dim_calendar AS
+SELECT *
+FROM l0.calendar;
+--------------------------------------------------
