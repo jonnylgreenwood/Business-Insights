@@ -9,7 +9,6 @@ ATTACH 'SQL/L1_forecast_accuracy.duckdb' AS l1 (READ_ONLY);
 --------------------------------------------------
 CREATE OR REPLACE TABLE dim_product AS
 SELECT
-    ROW_NUMBER() OVER () AS product_key,
     *
 FROM l1.dim_product;
 
