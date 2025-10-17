@@ -23,7 +23,8 @@ tables = [
     'event_windows_pearson_correlations',
     'l2_sales',
     'l2_sales_long',
-    'sales_profile'
+    'sales_profile',
+    'calendar_events'
 ]
 
 # Sample limit
