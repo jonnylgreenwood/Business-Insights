@@ -3,6 +3,18 @@ data/
 .venv/
 Python/helloworld.py
 
+# ------------------------
+# DATA FILES
+# ------------------------
+*.csv
+*.tsv
+*.parquet
+*.duckdb
+*.db
+*.sqlite
+*.log
+
+
 # macOS and system clutter
 .DS_Store
 Thumbs.db
@@ -19,3 +31,4 @@ forecast_accuracy.duckdb
 SQL/L0_forecast_accuracy.duckdb
 SQL/L1_forecast_accuracy.duckdb
 SQL/L1_forecast_accuracy.duckdb.wal
+SQL/L2_forecast_accuracy.duckdb
