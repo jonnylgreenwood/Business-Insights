@@ -1,0 +1,34 @@
+site_name: Forecast Accuracy Analysis
+repo_url: https://github.com/jonnylgreenwood/Forecast-Accuracy-Analysis
+repo_name: jonnylgreenwood/Forecast-Accuracy-Analysis
+site_description: Data documentation for L0, L1, and L2 DuckDB layers
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - search.suggest
+    - search.highlight
+    - toc.integrate
+    - content.code.annotate
+  palette:
+    - scheme: slate
+      primary: teal
+      accent: lime
+plugins:
+  - search
+  - git-revision-date-localized:
+      fallback_to_build_date: true
+
+nav:
+  - Home: index.md
+  - L0 (Raw Data):
+      - Overview: SQL/docs/L0/README.md
+      - Tables:
+          - calendar: SQL/docs/L0/tables/calendar.md
+          - sales_train_validation: SQL/docs/L0/tables/sales_train_validation.md
+          - sell_prices: SQL/docs/L0/tables/sell_prices.md
+  - L1 (Transformed):
+      - Overview: SQL/docs/L1/README.md
+  - L2 (Analytics):
+      - Overview: SQL/docs/L2/README.md
