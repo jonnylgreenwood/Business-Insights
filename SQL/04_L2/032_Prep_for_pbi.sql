@@ -2,7 +2,7 @@ ATTACH 'SQL/L2_forecast_accuracy.duckdb' AS l2;
 USE l2;
 
 COPY (SELECT * FROM l2.l2_sales_long)
-  TO 'SQL/outputs/parquet/fact_sales_enriched.parquet' (FORMAT PARQUET);
+  TO 'SQL/outputs/parquet/l2_sales_long.parquet' (FORMAT PARQUET);
 
 COPY (SELECT * FROM l2.dim_calendar)
   TO 'SQL/outputs/parquet/dim_calendar.parquet' (FORMAT PARQUET);
