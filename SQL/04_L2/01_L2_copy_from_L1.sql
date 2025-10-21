@@ -24,7 +24,8 @@ FROM l1.dim_sell_prices;
 -- calendar DIMENSION
 --------------------------------------------------
 CREATE OR REPLACE TABLE l2.dim_calendar AS
-SELECT *
+SELECT *,
+    FALSE AS isfuture
 FROM l1.dim_calendar;
 --------------------------------------------------
 --------------------------------------------------
