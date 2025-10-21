@@ -18,3 +18,9 @@ COPY (SELECT * FROM l2.dim_store)
 
 COPY (SELECT * FROM l2.sales_profile)
   TO 'SQL/outputs/parquet/sales_profile.parquet' (FORMAT PARQUET);
+
+COPY (SELECT * FROM l2.dq_results)
+  TO 'SQL/outputs/parquet/dq_results.parquet' (FORMAT PARQUET);
+
+COPY (SELECT * FROM l2.l2_sales_long_extended)
+  TO 'SQL/outputs/parquet/l2_sales_long_extended.parquet' (FORMAT PARQUET);
