@@ -32,3 +32,5 @@ SQL/L0_forecast_accuracy.duckdb
 SQL/L1_forecast_accuracy.duckdb
 SQL/L1_forecast_accuracy.duckdb.wal
 SQL/L2_forecast_accuracy.duckdb
+
+uncommitted/
