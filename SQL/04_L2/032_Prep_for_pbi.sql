@@ -24,3 +24,6 @@ COPY (SELECT * FROM l2.dq_results)
 
 COPY (SELECT * FROM l2.l2_sales_long_extended)
   TO 'SQL/outputs/parquet/l2_sales_long_extended.parquet' (FORMAT PARQUET);
+
+  COPY (SELECT * FROM l2.dim_calendar_periods)
+  TO 'SQL/outputs/parquet/zdim_calendar_periods.parquet' (FORMAT PARQUET);
