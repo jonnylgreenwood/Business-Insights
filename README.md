@@ -1,6 +1,5 @@
-# Forecast-Accuracy-Analysis
-Portfolio Evidence Project - Demonstrates end-to-end analytical capability
+# Business Insights
 
-## Documentation can be found [here](https://github.com/jonnylgreenwood/Forecast-Accuracy-Analysis/wiki)
-## Project files can be found [here](https://github.com/jonnylgreenwood/Forecast-Accuracy-Analysis)
+## Documentation can be found [here](https://github.com/jonnylgreenwood/Business-Insights/wiki)
+## Project files can be found [here](https://github.com/jonnylgreenwood/Business-Insights)
 ## Project management tracking can be found [here](https://github.com/users/jonnylgreenwood/projects/2)
