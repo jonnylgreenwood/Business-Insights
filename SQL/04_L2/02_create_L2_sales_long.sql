@@ -2,7 +2,7 @@
 -- Unpivot L1 sales_base into a long (fact) format
 ------------------------------------------------------------
 -- CREATE OR REPLACE TABLE l2_sales_long
-ATTACH 'SQL/L2_forecast_accuracy.duckdb' AS l2;
+ATTACH 'SQL/L2_business_insights.duckdb' AS l2;
 
 CREATE OR REPLACE TABLE l2.l2_sales_long AS
 SELECT

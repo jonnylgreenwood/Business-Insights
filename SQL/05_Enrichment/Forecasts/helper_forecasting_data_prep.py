@@ -5,8 +5,8 @@ from pathlib import Path
 # ---------------------------------------------------------------------
 # CONFIGURATION
 # ---------------------------------------------------------------------
-DB_PATH = "SQL/L2_forecast_accuracy.duckdb"
-SKU_SAMPLE_PATH = Path("data/sku_sample.csv")
+DB_PATH = "SQL/L2_business_insights.duckdb"
+SKU_SAMPLE_PATH = Path("SQL/outputs/sku_sample.csv")
 SAMPLE_RATE = 1  # 0.5%
 
 
@@ -18,7 +18,7 @@ def sample_skus(con, sample_rate=0.005, save=True):
 
     df = con.execute(f"""
         SELECT product_key, item_id, dept_id, cat_id
-        FROM L2_forecast_accuracy.dim_product
+        FROM L2_business_insights.dim_product
         WHERE random() < {sample_rate}
     """).fetchdf()
 
@@ -31,7 +31,7 @@ def sample_skus(con, sample_rate=0.005, save=True):
 
     return df
 
-# DB_PATH = "SQL/L2_forecast_accuracy.duckdb"
+# DB_PATH = "SQL/L2_business_insights.duckdb"
 # TABLE_NAME = "l2_sales_long_extended"
 
 
@@ -73,10 +73,10 @@ def main(get_sample: bool = False, sample_path=SKU_SAMPLE_PATH):
         p.item_id,
         p.dept_id,
         p.cat_id
-    FROM L2_forecast_accuracy.l2_sales_long_extended AS f
+    FROM L2_business_insights.l2_sales_long_extended AS f
     JOIN sku_sample AS p
       ON f.product_key = p.product_key
-    LEFT JOIN L2_forecast_accuracy.dim_calendar AS c
+    LEFT JOIN L2_business_insights.dim_calendar AS c
       ON f.date_key = c.date_key
     """
 

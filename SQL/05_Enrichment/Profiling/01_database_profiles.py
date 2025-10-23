@@ -5,9 +5,9 @@ import re
 
 # --- CONFIG ---
 dbs = {
-    "L0_forecast_accuracy": "SQL/L0_forecast_accuracy.duckdb",
-    "L1_forecast_accuracy": "SQL/L1_forecast_accuracy.duckdb",
-    "L2_forecast_accuracy": "SQL/L2_forecast_accuracy.duckdb",
+    "L0_business_insights": "SQL/L0_business_insights.duckdb",
+    "L1_business_insights": "SQL/L1_business_insights.duckdb",
+    "L2_business_insights": "SQL/L2_business_insights.duckdb",
 }
 
 wiki_path = Path("/Users/jonnygreenwood/Forecast-Accuracy-Analysis.wiki")

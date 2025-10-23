@@ -1,4 +1,4 @@
-ATTACH 'SQL/L1_forecast_accuracy.duckdb' AS l1;
+ATTACH 'SQL/L1_business_insights.duckdb' AS l1;
 
 ALTER TABLE l1.l1_sales DROP COLUMN IF EXISTS store_id;
 ALTER TABLE l1.l1_sales DROP COLUMN IF EXISTS item_id;

@@ -1,55 +1,40 @@
-ATTACH 'SQL/L0_forecast_accuracy.duckdb' AS l0 (READ_ONLY);
-ATTACH 'SQL/L1_forecast_accuracy.duckdb' AS l1;
-
+ATTACH 'SQL/L1_business_insights.duckdb' AS l1 (READ_ONLY);
+ATTACH 'SQL/L2_business_insights.duckdb' AS l2;
 --------------------------------------------------
 -- PRODUCT DIMENSION
 --------------------------------------------------
-CREATE OR REPLACE TABLE l1.dim_product AS
-SELECT DISTINCT
-    cat_id AS cat_id,
-    dept_id AS dept_id,
-    item_id AS item_id
-FROM l0.sales_train_validation;
---------------------------------------------------
-
+CREATE OR REPLACE TABLE l2.dim_product AS
+SELECT *
+FROM l1.dim_product;
 --------------------------------------------------
 -- STORE DIMENSION
 --------------------------------------------------
-CREATE OR REPLACE TABLE l1.dim_store AS
-SELECT DISTINCT
-    store_id AS store_id,
-    state_id AS state_id,
-FROM l0.sales_train_validation;
+CREATE OR REPLACE TABLE l2.dim_store AS
+SELECT *
+FROM l1.dim_store;
 --------------------------------------------------
-
-
 --------------------------------------------------
 -- SELL PRICES DIMENSION
 --------------------------------------------------
-CREATE OR REPLACE TABLE l1.dim_sell_prices AS
-SELECT DISTINCT
-    store_id AS store_id,
-    item_id AS item_id,
-    wm_yr_wk AS wm_yr_wk,
-    sell_price AS sell_price
-FROM l0.sell_prices;
+CREATE OR REPLACE TABLE l2.dim_sell_prices AS
+SELECT *
+FROM l1.dim_sell_prices;
 --------------------------------------------------
-
 --------------------------------------------------
 -- calendar DIMENSION
 --------------------------------------------------
-CREATE OR REPLACE TABLE l1.dim_calendar AS
+CREATE OR REPLACE TABLE l2.dim_calendar AS
+SELECT *,
+    FALSE AS isfuture
+FROM l1.dim_calendar;
+--------------------------------------------------
+--------------------------------------------------
+-- sales
+--------------------------------------------------
+CREATE OR REPLACE TABLE l2.l2_sales AS
 SELECT *
-FROM l0.calendar;
+FROM l1.l1_sales;
 --------------------------------------------------
-
---------------------------------------------------
--- sales DIMENSION
---------------------------------------------------
-
-CREATE OR REPLACE TABLE l1.l1_sales AS
-SELECT *
-FROM l0.sales_train_evaluation;
 
 DETACH DATABASE IF EXISTS l0;
 DETACH DATABASE IF EXISTS l1;

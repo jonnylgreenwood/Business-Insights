@@ -4,13 +4,13 @@ from pathlib import Path
 from sklearn.metrics import mean_absolute_percentage_error
 
 # 🔗 Your data-prep module (the one that samples SKUs & joins calendar/product)
-import forecasting_data_prep as fc  # keep this name/path consistent with your repo
+import helper_forecasting_data_prep as fc  # keep this name/path consistent with your repo
 
 # ---------------------------------------------------------------------
 # CONFIG
 # ---------------------------------------------------------------------
 GET_SAMPLE = True                          # only toggle if you want to resample SKUs
-SAMPLE_FILE_PATH = Path("data/sku_sample.csv")
+SAMPLE_FILE_PATH = Path("SQL/outputs/sku_sample.csv")
 
 # ---------------------------------------------------------------------
 # 1️⃣ Load sampled & joined data from the module
@@ -139,7 +139,7 @@ import duckdb
 # ---------------------------------------------------------------------
 # 5️⃣ Write forecasts back to DuckDB
 # ---------------------------------------------------------------------
-DB_PATH = "SQL/L2_forecast_accuracy.duckdb"
+DB_PATH = "SQL/L2_business_insights.duckdb"
 TABLE_NAME = "l2_sales_long_extended"
 
 print(f"\n💾 Writing forecast results to DuckDB → {TABLE_NAME}")

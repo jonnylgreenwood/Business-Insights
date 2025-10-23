@@ -3,7 +3,7 @@ import os
 from tabulate import tabulate
 
 # Paths
-DB_PATH = "SQL/L2_forecast_accuracy.duckdb"
+DB_PATH = "SQL/L2_business_insights.duckdb"
 EXPORT_DIR = "exports"
 os.makedirs(EXPORT_DIR, exist_ok=True)
 
@@ -12,8 +12,8 @@ con = duckdb.connect(DB_PATH)
 
 # List of L2 tables to export
 tables = [
-    "L2_forecast_accuracy.event_window_lifts",
-    "L2_forecast_accuracy.calendar_events",
+    "L2_business_insights.event_window_lifts",
+    "L2_business_insights.calendar_events",
     'data_quality_kpis',
     'dim_calendar',
     'dim_product',

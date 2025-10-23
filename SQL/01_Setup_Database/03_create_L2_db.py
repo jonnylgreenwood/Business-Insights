@@ -5,6 +5,6 @@ from pathlib import Path
 base_dir = Path(__file__).resolve().parent.parent.parent
 
 # Connect to database in project root
-con = duckdb.connect(base_dir / 'SQL/L2_forecast_accuracy.duckdb')
+con = duckdb.connect(base_dir / 'SQL/L2_business_insights.duckdb')
 
 con.close()

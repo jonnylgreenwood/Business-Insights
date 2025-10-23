@@ -1,4 +1,4 @@
-ATTACH 'SQL/L2_forecast_accuracy.duckdb' AS l2;
+ATTACH 'SQL/L2_business_insights.duckdb' AS l2;
 USE l2;
 
 WITH monthly_sales AS (

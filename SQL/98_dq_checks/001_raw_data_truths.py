@@ -9,7 +9,7 @@ import numpy as np
 # ----------------------------------------------------------------------------- #
 
 RAW_DIR = Path("data/m5-forecasting-accuracy")  # folder where your raw CSVs live
-L2_DB = Path("SQL/L2_forecast_accuracy.duckdb")
+L2_DB = Path("SQL/L2_business_insights.duckdb")
 OUTPUT_TABLE = "dq_truths"
 
 RAW_DIR.mkdir(parents=True, exist_ok=True)

@@ -8,7 +8,7 @@ from pathlib import Path
 # ----------------------------------------------------------------------------- #
 
 SQL_DIR = Path("SQL")
-L2_DB = SQL_DIR / "L2_forecast_accuracy.duckdb"
+L2_DB = SQL_DIR / "L2_business_insights.duckdb"
 OUTPUT_TABLE = "dq_results"
 TOLERANCE_PCT = 0.05  # ±5%
 

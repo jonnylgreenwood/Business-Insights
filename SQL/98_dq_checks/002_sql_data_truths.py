@@ -8,9 +8,9 @@ from pathlib import Path
 # ----------------------------------------------------------------------------- #
 
 SQL_DIR = Path("SQL")
-L0_DB = SQL_DIR / "L0_forecast_accuracy.duckdb"
-L1_DB = SQL_DIR / "L1_forecast_accuracy.duckdb"
-L2_DB = SQL_DIR / "L2_forecast_accuracy.duckdb"
+L0_DB = SQL_DIR / "L0_business_insights.duckdb"
+L1_DB = SQL_DIR / "L1_business_insights.duckdb"
+L2_DB = SQL_DIR / "L2_business_insights.duckdb"
 
 OUTPUT_TABLE = "dq_truths_sql"
 

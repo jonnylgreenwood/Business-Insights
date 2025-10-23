@@ -1,4 +1,4 @@
-ATTACH 'SQL/L1_forecast_accuracy.duckdb' AS l1;
+ATTACH 'SQL/L1_business_insights.duckdb' AS l1;
 ------------------------------------------------------------
 -- 1️⃣ Add surrogate keys to dimension tables
 ------------------------------------------------------------
