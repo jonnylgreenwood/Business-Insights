@@ -64,6 +64,8 @@ def main(get_sample: bool = False, sample_path=SKU_SAMPLE_PATH):
         f.product_key,
         f.store_key,
         f.sales,
+        f.sell_price,
+        f.sales_value,
         c.date,
         c.year,
         c.month,
