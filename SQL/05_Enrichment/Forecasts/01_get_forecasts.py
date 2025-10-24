@@ -38,7 +38,7 @@ else:
 df = df.sort_values(["product_key", "store_key", "date"]).reset_index(drop=True)
 
 # Keep only relevant columns
-base_cols = ["date", "date_key", "product_key", "store_key", "sales"]
+base_cols = ["date", "date_key", "product_key", "store_key", "sales", 'sell_price', 'sales_value']
 keep_cols = [c for c in base_cols if c in df.columns]
 df = df[keep_cols].copy()
 
