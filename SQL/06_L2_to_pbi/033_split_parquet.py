@@ -18,10 +18,10 @@ from pathlib import Path
 #     table = pa.Table.from_batches([batch])
 #     output_file = output_dir / f"{output_prefix}_{batch_index}.parquet"
 #     pq.write_table(table, output_file)
-#     print(f"✅ Wrote {output_file} ({table.num_rows:,} rows)")
+#     print(f" Wrote {output_file} ({table.num_rows:,} rows)")
 #     batch_index += 1
 
-# print(f"🎉 Done! Created {batch_index-1} split files in {output_dir}")
+# print(f"Done! Created {batch_index-1} split files in {output_dir}")
 
 # l2_sales_long_extended
 
@@ -40,7 +40,7 @@ for batch in reader.iter_batches(batch_size=rows_per_file):
     table = pa.Table.from_batches([batch])
     output_file = output_dir / f"{output_prefix}_{batch_index}.parquet"
     pq.write_table(table, output_file)
-    print(f"✅ Wrote {output_file} ({table.num_rows:,} rows)")
+    print(f"Wrote {output_file} ({table.num_rows:,} rows)")
     batch_index += 1
 
-print(f"🎉 Done! Created {batch_index-1} split files in {output_dir}")
+print(f"Done! Created {batch_index-1} split files in {output_dir}")
