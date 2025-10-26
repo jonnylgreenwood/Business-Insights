@@ -1,0 +1,354 @@
+createOrReplace
+
+	ref table _measures
+
+		measure 'Weekly Sales Z Score' =
+				
+				VAR ThisWeekSales = [Total Sales]
+				VAR MeanAllSel   = AVERAGEX(All(dim_calendar[wm_yr_wk]), CALCULATE([Total Sales]))
+				VAR StdAllSel    = STDEVX.P(All(dim_calendar[wm_yr_wk]), CALCULATE([Total Sales]))
+				
+				RETURN DIVIDE(ThisWeekSales - MeanAllSel, StdAllSel)
+			displayFolder: Stats
+			lineageTag: fcffd1e6-8d72-428b-8ab0-b630805a206f
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Weekly Sales StdDev (AllSelected)' =
+				
+				VAR DatesInScope = ALLSELECTED(dim_calendar[wm_yr_wk])
+				RETURN
+				    STDEVX.P(DatesInScope, CALCULATE([Total Sales]))
+			displayFolder: Stats
+			lineageTag: 8d0effcb-4c4f-4a47-b21b-0ed61703a355
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Weekly Sales Mean (AllSelected)' =
+				
+				VAR DatesInScope = ALLSELECTED(dim_calendar[wm_yr_wk])
+				RETURN
+				    AVERAGEX(DatesInScope, CALCULATE([Total Sales]))
+			displayFolder: Stats
+			lineageTag: 492730f8-8f08-4ab3-919e-4368454368eb
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Total Sales with YoY' =
+				
+				VAR Curr = FORMAT([Total Sales], "$0.0,,,M")
+				VAR YoY = [Sales $ YoY%]
+				VAR Symbol = IF(YoY >= 0, "▲", "▼")
+				VAR YoYText = FORMAT(ABS(YoY), "0.0%")
+				RETURN
+				Curr & "  " & Symbol & " " & YoYText
+			isHidden
+			displayFolder: Sales
+			lineageTag: f94db096-4d7f-4d42-b4c6-b150ca5b19e1
+
+			changedProperty = IsHidden
+
+		measure 'Total Sales $' = SUM(l2_sales_long_extended[sales_value])
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Sales
+			lineageTag: 99886512-7931-40b6-bcc7-ef371e837db8
+
+			annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+		measure 'Total Sales' = SUM('l2_sales_long_extended'[sales])
+			formatString: #,0
+			displayFolder: Sales
+			lineageTag: 9c316b6e-3946-4e27-9c74-4a3194f09061
+
+		measure 'STT Selected Periods' = ```
+				
+				VAR _sel =
+				    CONCATENATEX(
+				        VALUES('Calendar Periods'[Period]),
+				        'Calendar Periods'[Period],
+				        ", ",
+				        'Calendar Periods'[Period],
+				        ASC
+				    )
+				RETURN
+				IF(
+				    ISBLANK(_sel),
+				    "Sales to Target: All Periods",
+				    "Sales to Target: "&_sel
+				)
+				
+				```
+			displayFolder: Helpers
+			lineageTag: b81c489a-0a3e-44e1-9f47-d774e57903e7
+
+		measure 'Selected Periods' = ```
+				
+				VAR _sel =
+				    CONCATENATEX(
+				        VALUES('Calendar Periods'[Period]),
+				        'Calendar Periods'[Period],
+				        ", ",
+				        'Calendar Periods'[Period],
+				        ASC
+				    )
+				RETURN
+				IF(
+				    ISBLANK(_sel),
+				    "All Periods",
+				    _sel
+				)
+				
+				```
+			displayFolder: Helpers
+			lineageTag: 0259da63-a854-4c43-9f44-35cd4f217597
+
+		measure 'Sales YoY%' =
+				
+				VAR PrevYear = CALCULATE([Total Sales], DATEADD('dim_calendar'[Date], -1, YEAR))
+				RETURN DIVIDE([Total Sales] - PrevYear, PrevYear)
+			formatString: 0%;-0%;0%
+			displayFolder: Sales
+			lineageTag: 47d33ac5-374d-4367-b26c-4bccece8cbb1
+
+		measure 'Sales vs Target (SNiave)' = IFERROR(([Total Sales]-[Forecast Sales (SNaive)])/[Forecast Sales (SNaive)],blank())
+			formatString: 0%;-0%;0%
+			displayFolder: MAPE & BIAS
+			lineageTag: 8adefb7d-ae35-4c91-8306-8ac9dcbcbb9f
+
+		measure 'Sales StdDev' = STDEV.P(l2_sales_long_extended[sales])
+			displayFolder: Stats
+			lineageTag: 1f10495d-59fa-41dc-b8ff-40b0dea38a22
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Sales CoV' = DIVIDE([Sales StdDev], [Average Daily Sales $])
+			displayFolder: Stats
+			lineageTag: 8d474e49-2b55-40bf-8e58-b17ce668cd09
+
+		measure 'Sales $ YoY%' =
+				
+				VAR PrevYear = CALCULATE([Total Sales $], DATEADD('dim_calendar'[Date], -1, YEAR))
+				RETURN DIVIDE([Total Sales $] - PrevYear, PrevYear)
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Sales
+			lineageTag: 09d3843f-b1ce-4278-8b76-af376ab5f1fa
+
+		measure 'Sales / Forecast Combined' = CALCULATE([Total Sales],FILTER(dim_calendar,NOT(dim_calendar[isfuture])))+CALCULATE([Forecast Sales (SNaive)],FILTER(dim_calendar,dim_calendar[isfuture]))
+			formatString: 0
+			displayFolder: Forecast
+			lineageTag: 9b42b061-0d8b-405d-b0fe-31c49f84a8eb
+
+		measure 'Row Count' = COUNTROWS(l2_sales_long_extended)
+			formatString: #,0
+			displayFolder: Stats
+			lineageTag: 4c40dec7-d4ee-4cb9-b898-30e886e75174
+
+		measure 'Product Sales Share %' = DIVIDE([Total Sales],CALCULATE([Total Sales],ALL(dim_product)))
+			displayFolder: Sales
+			lineageTag: 7671199a-ebd9-40dd-8f61-b742d44a9482
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'MAPE PY' = CALCULATE([MAPE (SNaive)],FILTER('dim_calendar', dim_calendar[year]=2015))
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: MAPE & BIAS
+			lineageTag: ab36e87b-1078-4136-82b7-9a64d02746a9
+
+		measure 'MAPE CY' = CALCULATE([MAPE (SNaive)],FILTER('dim_calendar', dim_calendar[year]=2016))
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: MAPE & BIAS
+			lineageTag: f1cc4f43-07a0-4276-b30b-0177adbea10c
+
+		measure 'MAPE (SNaive)' = DIVIDE( ABS([Forecast Sales (SNaive)] - [Total Sales]), [Total Sales] )
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: MAPE & BIAS
+			lineageTag: ba51b397-77a0-4be4-999d-3ecf8ab0317c
+
+		measure 'MAPE (R3M)' = DIVIDE( ABS([Forecast Sales (R3M)] - [Total Sales]), [Total Sales] )
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: MAPE & BIAS
+			lineageTag: 8385a4b1-cbe2-4a75-a4ce-b7ff9db9ae9c
+
+		measure 'MAPE (R12M)' = DIVIDE( ABS([Forecast Sales (R12M)] - [Total Sales]), [Total Sales] )
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: MAPE & BIAS
+			lineageTag: 41aea1a4-f956-4ecb-9f34-a1105f17927d
+
+		measure 'MAPE (Naive)' = DIVIDE( ABS([Forecast Sales (Naive)] - [Total Sales]), [Total Sales] )
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: MAPE & BIAS
+			lineageTag: 15f7a540-543a-4690-9df3-fb42d015db18
+
+		measure 'MAPE (Drift)' = DIVIDE( ABS([Forecast Sales (Drift)] - [Total Sales]), [Total Sales] )
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: MAPE & BIAS
+			lineageTag: 82f148a3-d115-477d-9a52-19e68ed96dab
+
+		measure 'Last Actual Sales Date' =
+				
+				CALCULATE(
+				    MAX(dim_calendar[Date]),
+				    FILTER(
+				        l2_sales_long_extended,
+				        l2_sales_long_extended[sales] > 0
+				    )
+				)
+			formatString: General Date
+			displayFolder: Helpers
+			lineageTag: 8144aa7d-355b-4a8b-8fcc-9a7cd2c023a8
+
+		measure 'High Variability Stores' =
+				
+				TOPN(10, dim_store, [Sales CoV], DESC)
+			displayFolder: Stats
+			lineageTag: ada2c67e-0524-4c1a-a116-787b84ed24e3
+
+		measure 'Forecast Sales (SNaive) KPI val' = [Forecast Sales (SNaive)]*1.3
+			displayFolder: Forecast
+			lineageTag: 1e20b299-00a0-4a34-953e-f9a29d06e172
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Forecast Sales (SNaive)' = SUM('l2_sales_long_extended'[fc_snaive])
+			formatString: #,0
+			displayFolder: Forecast
+			lineageTag: 232c244c-2e81-4ffd-a580-81b747b87818
+
+		measure 'Forecast Sales (R3M)' = SUM(l2_sales_long_extended[fc_r3m])
+			formatString: #,0
+			displayFolder: Forecast
+			lineageTag: e295ee4d-2361-4c41-954c-8dc43f1217d2
+
+		measure 'Forecast Sales (R12M)' = SUM('l2_sales_long_extended'[fc_r12m])
+			formatString: #,0
+			displayFolder: Forecast
+			lineageTag: 0660b2aa-e699-4428-a69f-569c449192d8
+
+		measure 'Forecast Sales (Naive)' = SUM('l2_sales_long_extended'[fc_naive])
+			formatString: #,0
+			displayFolder: Forecast
+			lineageTag: 0c72dcfe-e67b-4899-908c-aacf739afb06
+
+		measure 'Forecast Sales (Drift)' = SUM('l2_sales_long_extended'[fc_drift])
+			formatString: #,0
+			displayFolder: Forecast
+			lineageTag: b5df767d-73f3-4c72-a9db-caa137d1ce11
+
+		measure 'Distinct Products Sold' = DISTINCTCOUNT(dim_product[product_key])
+			formatString: #,0
+			displayFolder: Helpers
+			lineageTag: 22e6840d-a9f6-49d3-af71-f771727eafec
+
+		measure 'Daily Sales Z Score' =
+				
+				VAR ThisDaySales = [Total Sales]
+				VAR MeanAllSel   = [Daily Sales Mean (AllSelected)]
+				VAR StdAllSel    = [Daily Sales StdDev (AllSelected)]
+				RETURN DIVIDE(ThisDaySales - MeanAllSel, StdAllSel)
+			displayFolder: Daily Sales Statistical Testing
+			lineageTag: b1ec1a07-d5d5-4b76-be1f-dcd0971aa349
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Daily Sales StdDev (AllSelected)' =
+				
+				VAR DatesInScope = ALLSELECTED(dim_calendar[date])
+				RETURN
+				    STDEVX.P(DatesInScope, CALCULATE([Total Sales]))
+			displayFolder: Daily Sales Statistical Testing
+			lineageTag: 54a7f8cc-eaf3-49aa-ae67-26d40d49e5c9
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Daily Sales Mean (AllSelected)' =
+				
+				VAR DatesInScope = ALLSELECTED(dim_calendar[date])
+				RETURN
+				    AVERAGEX(DatesInScope, CALCULATE([Total Sales]))
+			displayFolder: Daily Sales Statistical Testing
+			lineageTag: a0a59ada-311f-445d-acc4-5b2429de9a98
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Bias % (SNaive)' = DIVIDE([Bias (SNaive)], [Total Sales])
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: MAPE & BIAS
+			lineageTag: 4de1cac4-551d-47b5-b896-06ca70711868
+
+		measure 'Bias % (R3M)' = DIVIDE([Bias (R3M)], [Total Sales])
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: MAPE & BIAS
+			lineageTag: 30c88347-aa00-4d5d-afa7-0ead44652412
+
+		measure 'Bias % (R12M)' = DIVIDE([Bias (R12M)], [Total Sales])
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: MAPE & BIAS
+			lineageTag: cf10d2d5-0d6a-4489-8e4c-20f67044e850
+
+		measure 'Bias % (Naive)' = DIVIDE([Bias (Naive)], [Total Sales])
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: MAPE & BIAS
+			lineageTag: 172e936d-3fbc-4e09-bef8-2cb4a1eab7a9
+
+		measure 'Bias % (Drift)' = DIVIDE([Bias (Drift)], [Total Sales])
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: MAPE & BIAS
+			lineageTag: 09a20a23-ef00-419f-ac90-b0538aaa6624
+
+		measure 'Bias (SNaive)' = [Forecast Sales (SNaive)] - [Total Sales]
+			formatString: #,0
+			displayFolder: MAPE & BIAS
+			lineageTag: 36a027ff-c588-4aa4-910d-5d6e1b2cc107
+
+		measure 'Bias (R3M)' = [Forecast Sales (R3M)] - [Total Sales]
+			formatString: #,0
+			displayFolder: MAPE & BIAS
+			lineageTag: e5f13dc4-25ea-4aa8-be21-6374875ae2c9
+
+		measure 'Bias (R12M)' = [Forecast Sales (R12M)] - [Total Sales]
+			formatString: #,0
+			displayFolder: MAPE & BIAS
+			lineageTag: 38904f7d-35a1-4b99-bf5a-ff75e1ff9bf7
+
+		measure 'Bias (Naive)' = [Forecast Sales (Naive)] - [Total Sales]
+			formatString: #,0
+			displayFolder: MAPE & BIAS
+			lineageTag: 6b56dac7-3473-441c-a9a4-a7efc294dd72
+
+		measure 'Bias (Drift)' = [Forecast Sales (Drift)] - [Total Sales]
+			formatString: #,0
+			displayFolder: MAPE & BIAS
+			lineageTag: 3b4e70fb-b225-4897-9fa3-972bf208c4b7
+
+		measure 'Avg Sales $' = AVERAGE(l2_sales_long_extended[sales_value])
+			formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+			displayFolder: Sales
+			lineageTag: cf3145b0-d9dd-4078-ad6a-dcfb5f4f15ab
+
+			annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+		measure 'Average Selling Price' = DIVIDE([Total Sales $],[Total Sales])
+			formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+			displayFolder: Sales
+			lineageTag: d7b3a103-dd24-4e6a-955a-bcf2c2d66baa
+
+			annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+		measure 'Average Daily Sales $' =
+				
+				DIVIDE(
+				    [Total Sales],
+				    DISTINCTCOUNT(dim_calendar[date])
+				)
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Sales
+			lineageTag: a0492843-53b8-445f-9d22-6507b6b79997
+
+		measure 'ASP YoY%' =
+				
+				VAR PrevYear = CALCULATE([Average Selling Price], DATEADD('dim_calendar'[Date], -1, YEAR))
+				RETURN DIVIDE([Average Selling Price] - PrevYear, PrevYear)
+			formatString: 0%;-0%;0%
+			displayFolder: Sales
+			lineageTag: adb08115-efdd-4345-90dc-4e5a275508fb
+
